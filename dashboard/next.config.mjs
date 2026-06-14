@@ -1,7 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverComponentsExternalPackages: ["duckdb"],
+    serverComponentsExternalPackages: ["@duckdb/duckdb-wasm"],
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.experiments = {
+        ...config.experiments,
+        asyncWebAssembly: true,
+      };
+    }
+    return config;
   },
 };
 

@@ -134,11 +134,26 @@ Set `DUCKDB_PATH` if the warehouse file is not at `../data/warehouse.duckdb`.
 
 ### Dashboard → Vercel
 
-1. Connect the `dashboard/` directory to Vercel.
-2. Set `DUCKDB_PATH` or migrate to **MotherDuck** for a hosted warehouse.
-3. Deploy: `vercel --prod` from `dashboard/`.
+The dashboard uses **`@duckdb/duckdb-wasm`** (WebAssembly) instead of the native `duckdb` Node client, so it runs on Vercel serverless without GLIBC errors.
 
-**MotherDuck swap (dbt):** uncomment the `md:` path in `dbt/profiles.yml` and set `MOTHERDUCK_TOKEN`. Point the dashboard DuckDB client at the same MotherDuck database.
+1. **Generate the warehouse locally** (repo root):
+   ```bash
+   pip install -r requirements.txt && python seed.py && python pipeline/run_pipeline.py
+   ```
+2. **Copy the warehouse into the dashboard** (runs automatically before `dev` / `build`):
+   ```bash
+   cd dashboard && npm run sync:warehouse
+   ```
+3. **Commit** `dashboard/data/warehouse.duckdb` (needed on Vercel — the repo root `data/` folder is not deployed).
+4. In Vercel project settings:
+   - **Root Directory:** `dashboard`
+   - **Environment variable:** `DUCKDB_PATH=./data/warehouse.duckdb`
+5. Deploy:
+   ```bash
+   cd dashboard && vercel --prod
+   ```
+
+**MotherDuck swap (dbt):** uncomment the `md:` path in `dbt/profiles.yml` and set `MOTHERDUCK_TOKEN`. Point the dashboard DuckDB client at the same MotherDuck database when you outgrow file-based WASM reads.
 
 ### Scheduler → Railway
 

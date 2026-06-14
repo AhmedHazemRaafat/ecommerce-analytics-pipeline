@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "sync:warehouse": "node scripts/sync-warehouse.mjs",
+    "predev": "npm run sync:warehouse",
+    "prebuild": "npm run sync:warehouse",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@duckdb/duckdb-wasm": "^1.33.1-dev45.0",
     "@radix-ui/react-popover": "^1.1.16",
     "@radix-ui/react-select": "^2.3.0",
     "@radix-ui/react-slot": "^1.2.5",
@@ -17,7 +21,6 @@
     "clsx": "^2.1.1",
     "d3-scale": "^4.0.2",
     "date-fns": "^4.4.0",
-    "duckdb": "^1.4.4",
     "lucide-react": "^1.18.0",
     "next": "14.2.35",
     "radix-ui": "^1.5.0",

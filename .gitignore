@@ -12,6 +12,9 @@ data/warehouse.duckdb
 data/warehouse.duckdb.wal
 data/pipeline_state.json
 data/logs/
+# Keep dashboard copy for Vercel deploys
+!dashboard/data/
+!dashboard/data/warehouse.duckdb
 
 # dbt
 dbt/target/
