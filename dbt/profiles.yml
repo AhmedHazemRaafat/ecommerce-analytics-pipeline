@@ -1,0 +1,13 @@
+ecommerce_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "../data/warehouse.duckdb"
+      schema: main
+    prod:
+      type: duckdb
+      # Swap path for MotherDuck in production:
+      # path: "md:ecommerce_analytics?motherduck_token={{ env_var('MOTHERDUCK_TOKEN') }}"
+      path: "../data/warehouse.duckdb"
+      schema: main

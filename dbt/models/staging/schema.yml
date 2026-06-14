@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: Cleaned and deduplicated order line items
+    columns:
+      - name: order_id
+        description: Unique order identifier
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: Customer who placed the order
+        tests:
+          - not_null
+      - name: product_id
+        description: Product purchased
+        tests:
+          - not_null
+      - name: quantity
+        description: Units ordered
+        tests:
+          - not_null
+      - name: unit_price
+        description: Price per unit before discount
+        tests:
+          - not_null
+      - name: discount_pct
+        description: Discount percentage applied
+      - name: status
+        description: Order fulfillment status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['pending', 'processing', 'shipped', 'delivered', 'returned', 'cancelled']
+      - name: created_at
+        description: Order creation timestamp
+        tests:
+          - not_null
+      - name: country_code
+        description: ISO country code for shipping
+        tests:
+          - not_null
+
+  - name: stg_products
+    description: Cleaned product catalog
+    columns:
+      - name: product_id
+        description: Unique product identifier
+        tests:
+          - not_null
+          - unique
+      - name: name
+        description: Product display name
+        tests:
+          - not_null
+      - name: category
+        description: Product category
+        tests:
+          - not_null
+      - name: base_price
+        description: Standard list price
+        tests:
+          - not_null
+
+  - name: stg_customers
+    description: Cleaned customer records
+    columns:
+      - name: customer_id
+        description: Unique customer identifier
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: Customer email address
+        tests:
+          - not_null
+      - name: signup_date
+        description: Date customer registered
+        tests:
+          - not_null
+      - name: country_code
+        description: Customer country ISO code
+        tests:
+          - not_null

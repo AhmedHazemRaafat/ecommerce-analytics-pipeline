@@ -1,0 +1,87 @@
+version: 2
+
+models:
+  - name: mart_daily_revenue
+    description: Daily revenue and order KPIs
+    columns:
+      - name: date
+        description: Calendar date
+        tests:
+          - not_null
+          - unique
+      - name: revenue
+        description: Total revenue for the day
+        tests:
+          - not_null
+      - name: orders
+        description: Number of distinct orders
+        tests:
+          - not_null
+      - name: avg_order_value
+        description: Average order value
+      - name: new_customers
+        description: Customers who signed up on this date
+        tests:
+          - not_null
+
+  - name: mart_product_performance
+    description: Product-level sales and return metrics
+    columns:
+      - name: product_id
+        description: Unique product identifier
+        tests:
+          - not_null
+          - unique
+      - name: name
+        description: Product name
+        tests:
+          - not_null
+      - name: category
+        description: Product category
+        tests:
+          - not_null
+      - name: total_revenue
+        description: Lifetime revenue for the product
+        tests:
+          - not_null
+      - name: units_sold
+        description: Total units sold
+        tests:
+          - not_null
+      - name: return_rate
+        description: Percentage of orders returned
+
+  - name: mart_customer_cohorts
+    description: Monthly cohort retention and revenue
+    columns:
+      - name: cohort_month
+        description: Month the customer cohort signed up
+        tests:
+          - not_null
+      - name: months_since_signup
+        description: Months elapsed since cohort signup month
+        tests:
+          - not_null
+      - name: retention_rate
+        description: Percentage of cohort still active
+      - name: avg_revenue
+        description: Average revenue per active customer in period
+
+  - name: mart_geo_revenue
+    description: Revenue breakdown by country
+    columns:
+      - name: country
+        description: ISO country code
+        tests:
+          - not_null
+          - unique
+      - name: revenue
+        description: Total revenue in country
+        tests:
+          - not_null
+      - name: orders
+        description: Total orders in country
+        tests:
+          - not_null
+      - name: avg_order_value
+        description: Average order value in country

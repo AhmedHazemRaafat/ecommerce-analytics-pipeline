@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: orders
+        description: Raw order line items from e-commerce platform export
+      - name: products
+        description: Raw product catalog
+      - name: customers
+        description: Raw customer records

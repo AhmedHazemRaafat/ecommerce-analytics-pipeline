@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: int_order_items
+    description: Order line items enriched with product and customer attributes
+    columns:
+      - name: order_id
+        description: Unique order identifier
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: Customer identifier
+        tests:
+          - not_null
+      - name: product_id
+        description: Product identifier
+        tests:
+          - not_null
+      - name: line_revenue
+        description: Revenue for this line after discount
+        tests:
+          - not_null
+      - name: order_date
+        description: Date of the order
+        tests:
+          - not_null
