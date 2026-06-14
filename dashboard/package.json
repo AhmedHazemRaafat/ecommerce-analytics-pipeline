@@ -4,15 +4,13 @@
   "private": true,
   "scripts": {
     "sync:warehouse": "node scripts/sync-warehouse.mjs",
-    "predev": "npm run sync:warehouse",
-    "prebuild": "npm run sync:warehouse",
+    "export:data": "tsx scripts/export-to-json.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@duckdb/duckdb-wasm": "^1.33.1-dev45.0",
     "@radix-ui/react-popover": "^1.1.16",
     "@radix-ui/react-select": "^2.3.0",
     "@radix-ui/react-slot": "^1.2.5",
@@ -38,10 +36,12 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "duckdb": "^1.4.4",
     "eslint": "^8",
     "eslint-config-next": "14.2.35",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }

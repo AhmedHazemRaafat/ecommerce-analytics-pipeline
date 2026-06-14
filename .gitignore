@@ -12,9 +12,12 @@ data/warehouse.duckdb
 data/warehouse.duckdb.wal
 data/pipeline_state.json
 data/logs/
-# Keep dashboard copy for Vercel deploys
+# Keep dashboard copy for local export only
 !dashboard/data/
 !dashboard/data/warehouse.duckdb
+# Static JSON served by the dashboard API on Vercel
+!dashboard/public/data/
+!dashboard/public/data/*.json
 
 # dbt
 dbt/target/

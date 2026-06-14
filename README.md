@@ -122,38 +122,43 @@ dbt test --profiles-dir . --project-dir .
 
 All pages share a **date range picker** that filters API queries.
 
-### Environment
+### Refresh dashboard data
+
+The deployed dashboard reads **static JSON** from `dashboard/public/data/` (not DuckDB at runtime). After running the pipeline locally, export fresh data before deploying:
 
 ```bash
-cp dashboard/.env.example dashboard/.env.local
+cd dashboard
+npm run sync:warehouse   # copies ../data/warehouse.duckdb -> dashboard/data/
+npm run export:data      # writes public/data/*.json
 ```
 
-Set `DUCKDB_PATH` if the warehouse file is not at `../data/warehouse.duckdb`.
+Commit the updated JSON files in `dashboard/public/data/` when you want Vercel to show new numbers.
 
 ## Production deployment
 
 ### Dashboard → Vercel
 
-The dashboard uses **`@duckdb/duckdb-wasm`** (WebAssembly) instead of the native `duckdb` Node client, so it runs on Vercel serverless without GLIBC errors.
+The dashboard API routes read pre-exported JSON from `public/data/` so they work on Vercel serverless without DuckDB.
 
 1. **Generate the warehouse locally** (repo root):
    ```bash
    pip install -r requirements.txt && python seed.py && python pipeline/run_pipeline.py
    ```
-2. **Copy the warehouse into the dashboard** (runs automatically before `dev` / `build`):
+2. **Export static JSON for the dashboard:**
    ```bash
-   cd dashboard && npm run sync:warehouse
+   cd dashboard
+   npm install
+   npm run sync:warehouse
+   npm run export:data
    ```
-3. **Commit** `dashboard/data/warehouse.duckdb` (needed on Vercel — the repo root `data/` folder is not deployed).
-4. In Vercel project settings:
-   - **Root Directory:** `dashboard`
-   - **Environment variable:** `DUCKDB_PATH=./data/warehouse.duckdb`
+3. **Commit** `dashboard/public/data/*.json` (these files power production).
+4. In Vercel project settings, set **Root Directory** to `dashboard`.
 5. Deploy:
    ```bash
    cd dashboard && vercel --prod
    ```
 
-**MotherDuck swap (dbt):** uncomment the `md:` path in `dbt/profiles.yml` and set `MOTHERDUCK_TOKEN`. Point the dashboard DuckDB client at the same MotherDuck database when you outgrow file-based WASM reads.
+> **Note:** Run `npm run export:data` locally whenever you refresh pipeline data, then commit and redeploy.
 
 ### Scheduler → Railway
 
